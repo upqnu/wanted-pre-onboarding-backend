@@ -32,12 +32,26 @@ public class SecurityConfig {
                         )
                 )
 
-                /* 요청별 권한설정 */
+                /* 요청별 권한 설정 */
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .anyRequest().permitAll()
+                )
+
+                /* 로그인 설정 */
+//                .httpBasic(withDefaults())
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
+                        .loginPage("/login")
+//                        .defaultSuccessUrl("/home")
+                )
+
+                /* 로그아웃 설정 */
+                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/home")
                 );
 
         return http.build();
     }
+
 }
