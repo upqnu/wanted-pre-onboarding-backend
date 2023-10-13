@@ -6,4 +6,6 @@ import wanted.freeonboarding.backend.wwrn.domain.Applicant;
 
 @Repository
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
+
+    Applicant findByName(String name);
 }

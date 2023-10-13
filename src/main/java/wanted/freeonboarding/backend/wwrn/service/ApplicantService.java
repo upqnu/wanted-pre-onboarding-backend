@@ -1,0 +1,96 @@
+package wanted.freeonboarding.backend.wwrn.service;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import wanted.freeonboarding.backend.wwrn.domain.Applicant;
+import wanted.freeonboarding.backend.wwrn.domain.Application;
+import wanted.freeonboarding.backend.wwrn.domain.MemberStatus;
+import wanted.freeonboarding.backend.wwrn.domain.dto.ApplicantDto;
+import wanted.freeonboarding.backend.wwrn.repository.ApplicantRepository;
+import wanted.freeonboarding.backend.wwrn.repository.ApplicationRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+
+@RequiredArgsConstructor
+@Service
+public class ApplicantService {
+
+    private final ApplicantRepository applicantRepository;
+    private final ApplicationRepository applicationRepository;
+
+    @Transactional
+    public Applicant createApplicant(ApplicantDto applicantDto) {
+        Applicant createdApplicant = Applicant.builder()
+                .name(applicantDto.getName())
+                .email(applicantDto.getEmail())
+                .password(applicantDto.getPassword())
+                .nationality(applicantDto.getNationality())
+                .careers(applicantDto.getCareers())
+                .awardsAndOthers(applicantDto.getAwardsAndOthers())
+                .status(MemberStatus.ROLE_APPLICANT)
+                .build();
+
+        createdApplicant = applicantRepository.save(createdApplicant);
+
+        return createdApplicant;
+    }
+
+    @Transactional
+    public Applicant editUser(ApplicantDto applicantDto, Long applicantId) {
+        Applicant updatedApplicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + applicantId + "번 지원자를 찾을 수 없습니다. ]"));
+
+        updatedApplicant = Applicant.builder()
+                .password(applicantDto.getPassword())
+                .nationality(applicantDto.getNationality())
+                .careers(applicantDto.getCareers())
+                .awardsAndOthers(applicantDto.getAwardsAndOthers())
+                .build();
+
+        updatedApplicant = applicantRepository.save(updatedApplicant);
+
+        return updatedApplicant;
+    }
+
+    @Transactional
+    public void deleteApplicant(Long applicantId) {
+        Applicant deletedApplicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + applicantId + "번 지원자를 찾을 수 없습니다. ]"));
+
+        applicantRepository.deleteById(applicantId);
+    }
+
+    @Transactional
+    public Applicant getApplicantByApplicantId(Long applicantId) {
+        Applicant applicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + applicantId + "번 지원자를 찾을 수 없습니다. ]"));
+
+        return applicant;
+    }
+
+    @Transactional
+    public List<Application> getAllApplications(Long applicantId) {
+        Applicant applicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + applicantId + "번 지원자를 찾을 수 없습니다. ]"));
+
+        Optional<List<Application>> allApplicationsOptional = applicationRepository.findByApplicant_ApplicantId(applicantId);
+        if (allApplicationsOptional.isPresent()) {
+            List<Application> allApplications = allApplicationsOptional.get();
+            return allApplications;
+        } else {
+            throw new EntityNotFoundException("[ 지원내역을 찾을 수 없습니다. ]");
+        }
+    }
+
+    @Transactional
+    public Application getApplication(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + applicationId + "번 지원서를 찾을 수 없습니다. ]"));
+
+        return application;
+    }
+}
