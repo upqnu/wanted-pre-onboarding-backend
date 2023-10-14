@@ -14,12 +14,12 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home() {
-        return "여기는 원티드 프리온보딩 백엔드 - 사전과제 [wanted wantU right now]의 메인 페이지입니다.!";
+        return "여기는 원티드 프리온보딩 백엔드 - 사전과제 [wanted wantU right now]의 메인 페이지!";
     }
 
     @GetMapping("/login")
     public String loginPage() {
-        return "로그인 되었!";
+        return "로그인 되었어요!";
     }
 
     @GetMapping("/logout")
