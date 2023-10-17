@@ -47,7 +47,7 @@ public class CompanyService {
 
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        if (authentication != null) {
-//            Object principal = authentication.getPrincipal();
+//            Object principal = authent자ication.getPrincipal();
 //
 //            if (principal instanceof String) {
 //                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
