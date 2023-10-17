@@ -1,5 +1,6 @@
 package wanted.freeonboarding.backend.wwrn.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class JobPosting extends BaseEntity {
     @Column(nullable = false)
     private String postingTitle;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;

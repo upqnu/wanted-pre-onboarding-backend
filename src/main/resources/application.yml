@@ -1,4 +1,7 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
   h2:
     console:
       enabled: true
@@ -18,6 +21,12 @@ logging:
         jdbc:
           datasource:
             init: DEBUG
+
+    wanted:
+      freeonboarding:
+        backend:
+          wwrn:
+            api: DEBUG
 
       hibernate:
         SQL: DEBUG
