@@ -22,11 +22,11 @@ logging:
           datasource:
             init: DEBUG
 
-    wanted:
-      freeonboarding:
-        backend:
-          wwrn:
-            api: DEBUG
+#    wanted:
+#      freeonboarding:
+#        backend:
+#          wwrn:
+#            api: DEBUG
 
       hibernate:
         SQL: DEBUG
