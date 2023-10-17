@@ -2,10 +2,12 @@ package wanted.freeonboarding.backend.wwrn.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import wanted.freeonboarding.backend.wwrn.domain.JobPosting;
-import wanted.freeonboarding.backend.wwrn.domain.dto.JobPostingDto;
+import wanted.freeonboarding.backend.wwrn.domain.dto.JobPostingCreateDto;
+import wanted.freeonboarding.backend.wwrn.domain.dto.JobPostingPatchDto;
 import wanted.freeonboarding.backend.wwrn.service.JobPostingService;
 
 import java.net.URI;
@@ -13,14 +15,15 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/job-posting")
+@RequestMapping(value = "/job-posting", produces = "application/json; charset=utf8")
 public class JobPostingController {
 
     private final JobPostingService jobPostingService;
 
+//    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping("/create")
-    public ResponseEntity<JobPosting> createJobPosting(@RequestBody JobPostingDto jobPostingDto) {
-        JobPosting newJobPosting = jobPostingService.createJobPosting(jobPostingDto);
+    public ResponseEntity<JobPosting> createJobPosting(@RequestBody JobPostingCreateDto jobPostingCreateDtoDto) {
+        JobPosting newJobPosting = jobPostingService.createJobPosting(jobPostingCreateDtoDto);
 
         // 생성된 채용공고의 URI를 생성. 예: /job-posting/{jobPostingId}
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -34,12 +37,14 @@ public class JobPostingController {
                 .body(newJobPosting);
     }
 
+//    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PatchMapping("/{jobPostingId}/update")
-    public ResponseEntity<JobPosting> editJobPosting(@RequestBody JobPostingDto jobPostingDto, @PathVariable Long jobPostingId) {
-        JobPosting updatedJobPosting = jobPostingService.editJobPosting(jobPostingDto, jobPostingId);
+    public ResponseEntity<JobPosting> editJobPosting(@RequestBody JobPostingPatchDto jobPostingPatchDto, @PathVariable Long jobPostingId) {
+        JobPosting updatedJobPosting = jobPostingService.editJobPosting(jobPostingPatchDto, jobPostingId);
         return ResponseEntity.ok(updatedJobPosting);
     }
 
+    //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @DeleteMapping("/{jobPostingId}/delete")
     public ResponseEntity<String> deleteJobPosting(@PathVariable Long jobPostingId) {
         jobPostingService.deleteJobPostingById(jobPostingId);

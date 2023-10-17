@@ -10,12 +10,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationDto {
+public class ApplicationPatchDto {
 
-    @NotBlank
+    private Long applicantId;
+
+    @NotBlank(message = "지원서 제목은 반드시 입력해야 합니다.")
     private String applyingTitle;
 
-    @NotBlank
+    @NotBlank(message = "자기 소개는 반드시 입력해야 합니다.")
     private String applyingIntroduction;
 
     private String applyingCareers;

@@ -2,6 +2,7 @@ package wanted.freeonboarding.backend.wwrn.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import wanted.freeonboarding.backend.wwrn.domain.Applicant;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/applicant")
+@RequestMapping(value = "/applicant", produces = "application/json; charset=utf8")
 public class ApplicantController {
 
     private final ApplicantService applicantService;
@@ -35,30 +36,35 @@ public class ApplicantController {
                 .body(newApplicant);
     }
 
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @PatchMapping("/{applicantId}/update")
     public ResponseEntity<Applicant> editUser(@RequestBody ApplicantDto applicantDto, @PathVariable Long applicantId) {
         Applicant updateApplicant = applicantService.editUser(applicantDto, applicantId);
         return ResponseEntity.ok(updateApplicant);
     }
 
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @DeleteMapping("/{applicantId}/delete")
     public ResponseEntity<String> deleteUser(@PathVariable Long applicantId) {
         applicantService.deleteApplicant(applicantId);
         return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
     }
 
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @GetMapping("/{applicantId}")
     public ResponseEntity<Applicant> getUser(@PathVariable Long applicantId) {
         Applicant applicant = applicantService.getApplicantByApplicantId(applicantId);
         return ResponseEntity.ok(applicant);
     }
 
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @GetMapping("/{applicantId}/applications")
     public ResponseEntity<List<Application>> getAllApplications(@PathVariable Long applicantId) {
         List<Application> allApplications = applicantService.getAllApplications(applicantId);
         return ResponseEntity.ok(allApplications);
     }
 
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @GetMapping("/{applicantId}/applications/{applicationId}")
     public ResponseEntity<Application> getApplication(@PathVariable Long applicationId) {
         Application application = applicantService.getApplication(applicationId);
