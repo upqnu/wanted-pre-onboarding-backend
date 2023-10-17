@@ -42,14 +42,14 @@ public class HomeController {
     public ResponseEntity<?> companyLogin(@RequestBody LoginRequest request) {
         try {
             // 회사용 로그인 처리
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+//            );
+//
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // 비밀번호를 해시화하여 저장된 비밀번호와 비교
-            String encodedPassword = passwordEncoder.encode(request.getPassword());
+//            String encodedPassword = passwordEncoder.encode(request.getPassword());
 
             // 회사 정보 가져오기
             Company company = companyRepository.findByEmail(request.getUsername());
@@ -79,14 +79,14 @@ public class HomeController {
     public ResponseEntity<?> applicantLogin(@RequestBody LoginRequest request) {
         try {
             // 지원자용 로그인 처리
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            Authentication authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+//            );
+//
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // 비밀번호를 해시화하여 저장된 비밀번호와 비교
-            String encodedPassword = passwordEncoder.encode(request.getPassword());
+//            String encodedPassword = passwordEncoder.encode(request.getPassword());
 
             // 지원자 정보 가져오기
             Applicant applicant = applicantRepository.findByEmail(request.getUsername());

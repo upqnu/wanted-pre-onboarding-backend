@@ -1,5 +1,6 @@
 package wanted.freeonboarding.backend.wwrn.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Applicant extends Member {
     @Column(nullable = false)
     private MemberStatus status;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "applicant")
     private List<Application> myApplication;
 }
