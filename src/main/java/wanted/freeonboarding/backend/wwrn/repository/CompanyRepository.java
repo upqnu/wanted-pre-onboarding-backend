@@ -14,5 +14,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT c.password FROM Company c WHERE c.email = :email")
     String findPasswordByEmail(@Param("email") String email);
 
-//    String findPasswordByEmail(String userEmail);
+//    @Query("SELECT c.companyId FROM Company c WHERE c.companyId = :companyId")
+//    Long findCompany_ByCompanyId(@Param("companyId") Long jobPosting);
 }
