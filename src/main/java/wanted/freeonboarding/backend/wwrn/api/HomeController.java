@@ -1,5 +1,6 @@
 package wanted.freeonboarding.backend.wwrn.api;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,10 @@ import wanted.freeonboarding.backend.wwrn.domain.Applicant;
 import wanted.freeonboarding.backend.wwrn.domain.Company;
 import wanted.freeonboarding.backend.wwrn.repository.ApplicantRepository;
 import wanted.freeonboarding.backend.wwrn.repository.CompanyRepository;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(produces = "application/json; charset=utf8")
@@ -39,17 +45,8 @@ public class HomeController {
     private ApplicantRepository applicantRepository;
 
     @PostMapping("/login/company")
-    public ResponseEntity<?> companyLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> companyLogin(@RequestBody LoginRequest request, HttpSession session) {
         try {
-            // 회사용 로그인 처리
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-//            );
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // 비밀번호를 해시화하여 저장된 비밀번호와 비교
-//            String encodedPassword = passwordEncoder.encode(request.getPassword());
 
             // 회사 정보 가져오기
             Company company = companyRepository.findByEmail(request.getUsername());
@@ -61,6 +58,9 @@ public class HomeController {
                 log.error("비밀번호가 일치하지 않습니다.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
             } else {
+                // 세션에 권한 정보 저장
+                session.setAttribute("userAuthorities", getAuthorities());
+                log.info("권한 : " + String.valueOf(getAuthorities()));
                 return ResponseEntity.ok(company);
             }
 //            if (company == null) {
@@ -76,17 +76,8 @@ public class HomeController {
     }
 
     @PostMapping("/login/applicant")
-    public ResponseEntity<?> applicantLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> applicantLogin(@RequestBody LoginRequest request, HttpSession session) {
         try {
-            // 지원자용 로그인 처리
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-//            );
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // 비밀번호를 해시화하여 저장된 비밀번호와 비교
-//            String encodedPassword = passwordEncoder.encode(request.getPassword());
 
             // 지원자 정보 가져오기
             Applicant applicant = applicantRepository.findByEmail(request.getUsername());
@@ -98,6 +89,9 @@ public class HomeController {
                 log.error("비밀번호가 일치하지 않습니다.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
             } else {
+                // 세션에 권한 정보 저장
+                session.setAttribute("userAuthorities", getAuthorities());
+                log.info("권한 : " + String.valueOf(getAuthorities()));
                 return ResponseEntity.ok(applicant);
             }
 //            if (applicant == null) {
@@ -115,14 +109,25 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/home")
-    public String home() {
-        return "여기는 원티드 프리온보딩 백엔드 - 사전과제 [wanted wantU right now]의 메인 페이지!";
+    // 로그인 이후에 권한 정보를 가져오는 메서드
+    private List<String> getAuthorities() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            return authentication.getAuthorities().stream()
+                    .map(authority -> ((SimpleGrantedAuthority) authority).getAuthority())
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
     @GetMapping("/logout")
-    public String logoutUrl() {
+    public String logout() {
         return "로그아웃 되었!";
+    }
+
+    @GetMapping("/home")
+    public String home() {
+        return "여기는 원티드 프리온보딩 백엔드 - 사전과제 [wanted wantU right now]의 메인 페이지!";
     }
 
     @Getter

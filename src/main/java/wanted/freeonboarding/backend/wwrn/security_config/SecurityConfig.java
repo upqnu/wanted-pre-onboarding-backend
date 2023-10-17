@@ -63,6 +63,7 @@ public class SecurityConfig {
                 /* 요청별 권한 설정 */
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
                                 .anyRequest().permitAll()
                 )
 
@@ -85,7 +86,9 @@ public class SecurityConfig {
                 /* 로그아웃 설정 */
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home")
+//                        .logoutSuccessUrl("/home")
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제 (선택 사항)
                 );
 
         return http.build();
