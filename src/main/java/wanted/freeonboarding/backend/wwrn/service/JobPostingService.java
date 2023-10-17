@@ -26,7 +26,7 @@ public class JobPostingService {
     public JobPosting createJobPosting(JobPostingCreateDto jobPostingCreateDto) {
 
 //        Company postingCreatingCompany = companyRepository.findById(jobPostingCreateDto.getCompanyId())
-//                .orElseThrow(() -> new IllegalArgumentException(" [ " + jobPostingCreateDto.getCompanyId() + "번 회사를 찾을 수 없습니다."));
+//                .orElseThrow(() -> new EntityNotFoundException(" [ " + jobPostingCreateDto.getCompanyId() + "번 회사를 찾을 수 없습니다."));
 
         JobPosting createdJobPosting = JobPosting.builder()
                 .postingTitle(jobPostingCreateDto.getPostingTitle())
@@ -88,7 +88,7 @@ public class JobPostingService {
 //                }
 //            }
 //        } else {
-//            throw new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 수정할 권한이 없습니다. ]");
+//            throw new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 삭제할 권한이 없습니다. ]");
 //        }
 
         jobPostingRepository.deleteById(jobPostingId);

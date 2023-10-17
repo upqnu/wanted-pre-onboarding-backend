@@ -20,7 +20,7 @@ public class JobPostingController {
 
     private final JobPostingService jobPostingService;
 
-//    @PreAuthorize("hasRole('Role_COMPANY')")
+//    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping("/create")
     public ResponseEntity<JobPosting> createJobPosting(@RequestBody JobPostingCreateDto jobPostingCreateDtoDto) {
         JobPosting newJobPosting = jobPostingService.createJobPosting(jobPostingCreateDtoDto);
@@ -37,14 +37,14 @@ public class JobPostingController {
                 .body(newJobPosting);
     }
 
-//    @PreAuthorize("hasRole('Role_COMPANY')")
+//    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PatchMapping("/{jobPostingId}/update")
     public ResponseEntity<JobPosting> editJobPosting(@RequestBody JobPostingPatchDto jobPostingPatchDto, @PathVariable Long jobPostingId) {
         JobPosting updatedJobPosting = jobPostingService.editJobPosting(jobPostingPatchDto, jobPostingId);
         return ResponseEntity.ok(updatedJobPosting);
     }
 
-    //    @PreAuthorize("hasRole('Role_COMPANY')")
+    //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @DeleteMapping("/{jobPostingId}/delete")
     public ResponseEntity<String> deleteJobPosting(@PathVariable Long jobPostingId) {
         jobPostingService.deleteJobPostingById(jobPostingId);

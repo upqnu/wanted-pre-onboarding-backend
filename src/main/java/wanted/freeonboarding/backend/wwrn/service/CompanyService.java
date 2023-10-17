@@ -45,10 +45,40 @@ public class CompanyService {
         Company updatedCompany = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("[ " + companyId + "번 회사를 찾을 수 없습니다. ]"));
 
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (companyId.equals(currentUserId)) {
+//                    updatedCompany = Company.builder()
+//                            .email(updatedCompany.getEmail())
+//                            .password(companyDto.getPassword())
+//                            .name(updatedCompany.getName())
+//                            .headOfficeNation(companyDto.getHeadOfficeNation())
+//                            .headOfficeCity(companyDto.getHeadOfficeCity())
+//                            .status(updatedCompany.getStatus())
+//                            .build();
+//
+//                    updatedCompany = companyRepository.save(updatedCompany);
+//
+//                    return updatedCompany;
+//                }
+//            }
+//        } else {
+//            throw new EntityNotFoundException("[ " + companyId + "번 회사 정보를 수정할 권한이 없습니다. ]");
+//        }
+
         updatedCompany = Company.builder()
+                .email(updatedCompany.getEmail())
                 .password(companyDto.getPassword())
+                .name(updatedCompany.getName())
                 .headOfficeNation(companyDto.getHeadOfficeNation())
                 .headOfficeCity(companyDto.getHeadOfficeCity())
+                .status(updatedCompany.getStatus())
                 .build();
 
         updatedCompany = companyRepository.save(updatedCompany);
@@ -61,6 +91,22 @@ public class CompanyService {
         Company deletedCompany = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("[ " + companyId + "번 회사를 찾을 수 없습니다. ]"));
 
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (companyId.equals(currentUserId)) {
+//                    companyRepository.deleteById(companyId);
+//                }
+//            }
+//        } else {
+//            throw new EntityNotFoundException("[ " + companyId + "번 회사를 탈퇴시킬 권한이 없습니다. ]");
+//        }
+
         companyRepository.deleteById(companyId);
     }
 
@@ -68,6 +114,22 @@ public class CompanyService {
     public Company getCompanyByCompanyId(Long companyId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("[ " + companyId + "번 회사를 찾을 수 없습니다. ]"));
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (companyId.equals(currentUserId)) {
+//                    return company;
+//                }
+//            }
+//        } else {
+//            throw new EntityNotFoundException("[ " + companyId + "번 회사 정보를 조회할 권한이 없습니다. ]");
+//        }
 
         return company;
     }
@@ -77,19 +139,72 @@ public class CompanyService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("[ " + companyId + "번 회사를 찾을 수 없습니다. ]"));
 
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (!companyId.equals(currentUserId)) {
+//                    throw new EntityNotFoundException("[ " + companyId + "번 회사의 채용공고를 조회할 권한이 없습니다. ]");
+//                }
+//            }
+//        }
+
         Optional<List<JobPosting>> jobPostingListOptional = jobPostingRepository.findByCompany_CompanyId(companyId);
         if (jobPostingListOptional.isPresent()) {
             List<JobPosting> jobPostingList = jobPostingListOptional.get();
             return jobPostingList;
         } else {
-            throw new EntityNotFoundException("[ 채용공고를 찾을 수 없습니다. ]");
+            throw new EntityNotFoundException("[ 등록된 채용공고가 없습니다. ]");
         }
     }
 
     @Transactional
-    public List<Application> getAllApplicationsPerJobPosting(Long jobPostingId) {
+    public JobPosting getSingleCompanyJobPosting(Long companyId, Long jobPostingId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + companyId + "번 회사를 찾을 수 없습니다. ]"));
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (!companyId.equals(currentUserId)) {
+//                    throw new EntityNotFoundException("[ " + companyId + "번 회사의 채용공고를 조회할 권한이 없습니다. ]");
+//                }
+//            }
+//        }
+
         JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
                 .orElseThrow(() -> new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 찾을 수 없습니다. ]"));
+
+        return jobPosting;
+    }
+
+    @Transactional
+    public List<Application> getAllApplicationsPerJobPosting(Long jobPostingId, Long companyId) {
+        JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 찾을 수 없습니다. ]"));
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (!companyId.equals(currentUserId)) {
+//                    throw new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 조회할 권한이 없습니다. ]");
+//                }
+//            }
+//        }
 
         Optional<List<Application>> allApplicationsPerJobPostingOptional = applicationRepository.findByJobPosting_JobPostingId(jobPostingId);
         if (allApplicationsPerJobPostingOptional.isPresent()) {
@@ -99,4 +214,30 @@ public class CompanyService {
             throw new EntityNotFoundException("[ 채용공고에 지원자가 아직 없습니다. ]");
         }
     }
+
+    @Transactional
+    public Application getSingleApplicationPerJobPosting(Long jobPostingId, Long companyId, Long applicationId) {
+        JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 찾을 수 없습니다. ]"));
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//
+//            if (principal instanceof String) {
+//                // principal이 String인 경우 (대부분의 경우), 이는 사용자의 ID
+//                String currentUserId = (String) principal;
+//
+//                if (!companyId.equals(currentUserId)) {
+//                    throw new EntityNotFoundException("[ " + jobPostingId + "번 채용공고에 지원한 지원자를 조회할 권한이 없습니다. ]");
+//                }
+//            }
+//        }
+
+        Application singleApplication = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new EntityNotFoundException("[ " + applicationId + "번 지원서를 찾을 수 없습니다. ]"));
+
+        return singleApplication;
+    }
+
 }

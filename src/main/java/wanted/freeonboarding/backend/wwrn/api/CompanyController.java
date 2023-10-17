@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/company")
+@RequestMapping(value = "/company", produces = "application/json; charset=utf8")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -54,14 +54,27 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}/job-posting")
-    public ResponseEntity<List<JobPosting>> getCompanyJobPostings(@PathVariable Long companyId) {
+    public ResponseEntity<List<JobPosting>> getAllCompanyJobPostings(@PathVariable Long companyId) {
         List<JobPosting> jobPostingList = companyService.getAllCompanyJobPosting(companyId);
         return ResponseEntity.ok(jobPostingList);
     }
 
+    @GetMapping("/{companyId}/job-posting/{jobPostingId}")
+    public ResponseEntity<JobPosting> getSingleCompanyJobPosting(@PathVariable Long companyId, @PathVariable Long jobPostingId) {
+        JobPosting jobPosting = companyService.getSingleCompanyJobPosting(companyId, jobPostingId);
+        return ResponseEntity.ok(jobPosting);
+    }
+
     @GetMapping("/{companyId}/job-posting/{jobPostingId}/applications")
-    public ResponseEntity<List<Application>> getAllApplicationsPerJobPosting(@PathVariable Long jobPostingId) {
-        List<Application> allApplicationsPerJobPosting = companyService.getAllApplicationsPerJobPosting(jobPostingId);
+    public ResponseEntity<List<Application>> getAllApplicationsPerJobPosting(@PathVariable Long jobPostingId, @PathVariable Long companyId) {
+        List<Application> allApplicationsPerJobPosting = companyService.getAllApplicationsPerJobPosting(jobPostingId, companyId);
         return ResponseEntity.ok(allApplicationsPerJobPosting);
+    }
+
+    @GetMapping("/{companyId}/job-posting/{jobPostingId}/applications/{applicationId}")
+    public ResponseEntity<Application> getSingleApplicationPerJobPosting(
+            @PathVariable Long jobPostingId, @PathVariable Long companyId, @PathVariable Long applicationId) {
+        Application singleApplicationPerJobPosting = companyService.getSingleApplicationPerJobPosting(jobPostingId, companyId, applicationId);
+        return ResponseEntity.ok(singleApplicationPerJobPosting);
     }
 }

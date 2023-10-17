@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/applicant")
+@RequestMapping(value = "/applicant", produces = "application/json; charset=utf8")
 public class ApplicantController {
 
     private final ApplicantService applicantService;
