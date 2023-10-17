@@ -2,6 +2,7 @@ package wanted.freeonboarding.backend.wwrn.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wanted.freeonboarding.backend.wwrn.domain.Applicant;
@@ -21,13 +22,14 @@ public class ApplicantService {
 
     private final ApplicantRepository applicantRepository;
     private final ApplicationRepository applicationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Applicant createApplicant(ApplicantDto applicantDto) {
         Applicant createdApplicant = Applicant.builder()
                 .name(applicantDto.getName())
                 .email(applicantDto.getEmail())
-                .password(applicantDto.getPassword())
+                .password(passwordEncoder.encode(applicantDto.getPassword()))
                 .nationality(applicantDto.getNationality())
                 .careers(applicantDto.getCareers())
                 .awardsAndOthers(applicantDto.getAwardsAndOthers())
@@ -56,7 +58,7 @@ public class ApplicantService {
 //                    updatedApplicant = Applicant.builder()
 //                                .name(updatedApplicant.getName())
 //                                .email(updatedApplicant.getEmail())
-//                                .password(applicantDto.getPassword())
+//                                .password(passwordEncoder.encode(applicantDto.getPassword()))
 //                                .nationality(applicantDto.getNationality())
 //                                .careers(applicantDto.getCareers())
 //                                .awardsAndOthers(applicantDto.getAwardsAndOthers())
@@ -75,7 +77,7 @@ public class ApplicantService {
         updatedApplicant = Applicant.builder()
                 .name(updatedApplicant.getName())
                 .email(updatedApplicant.getEmail())
-                .password(applicantDto.getPassword())
+                .password(passwordEncoder.encode(applicantDto.getPassword()))
                 .nationality(applicantDto.getNationality())
                 .careers(applicantDto.getCareers())
                 .awardsAndOthers(applicantDto.getAwardsAndOthers())

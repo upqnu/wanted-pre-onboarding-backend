@@ -2,6 +2,7 @@ package wanted.freeonboarding.backend.wwrn.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wanted.freeonboarding.backend.wwrn.domain.Application;
@@ -23,12 +24,13 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final JobPostingRepository jobPostingRepository;
     private final ApplicationRepository applicationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Company createCompany(CompanyDto companyDto) {
         Company createdCompany = Company.builder()
                 .email(companyDto.getEmail())
-                .password(companyDto.getPassword())
+                .password(passwordEncoder.encode(companyDto.getPassword()))
                 .name(companyDto.getName())
                 .headOfficeNation(companyDto.getHeadOfficeNation())
                 .headOfficeCity(companyDto.getHeadOfficeCity())
@@ -56,7 +58,7 @@ public class CompanyService {
 //                if (companyId.equals(currentUserId)) {
 //                    updatedCompany = Company.builder()
 //                            .email(updatedCompany.getEmail())
-//                            .password(companyDto.getPassword())
+//                            .password(passwordEncoder.encode(companyDto.getPassword()))
 //                            .name(updatedCompany.getName())
 //                            .headOfficeNation(companyDto.getHeadOfficeNation())
 //                            .headOfficeCity(companyDto.getHeadOfficeCity())
@@ -74,7 +76,7 @@ public class CompanyService {
 
         updatedCompany = Company.builder()
                 .email(updatedCompany.getEmail())
-                .password(companyDto.getPassword())
+                .password(passwordEncoder.encode(companyDto.getPassword()))
                 .name(updatedCompany.getName())
                 .headOfficeNation(companyDto.getHeadOfficeNation())
                 .headOfficeCity(companyDto.getHeadOfficeCity())
