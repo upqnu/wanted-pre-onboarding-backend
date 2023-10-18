@@ -1,7 +1,23 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
   h2:
     console:
       enabled: true
 
   datasource:
-    url: jdbc:h2:mem:wwrn
+    url: jdbc:h2:mem:wwrn;;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          datasource:
+            init: DEBUG
+        security: DEBUG
+
+      hibernate:
+        SQL: DEBUG

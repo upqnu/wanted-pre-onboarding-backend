@@ -1,17 +1,18 @@
 package wanted.freeonboarding.backend.wwrn.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 public class Applicant extends Member {
 
@@ -32,6 +33,7 @@ public class Applicant extends Member {
     @Column(nullable = false)
     private MemberStatus status;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "applicant")
     private List<Application> myApplication;
 }
