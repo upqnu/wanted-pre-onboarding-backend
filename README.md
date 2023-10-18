@@ -50,7 +50,7 @@
 
 ### 5. API 설계
 
-![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/3a582bdf-eaf6-4a57-90c2-04ad72934147)
+![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/f1153cc0-737f-4cf2-af12-0f531afff151)
 
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/86885231-32db-428b-abbf-3587915f1249)
 
@@ -60,7 +60,7 @@
 
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/209899ce-4303-4867-8489-d109de30079e)
 
-### Git commit 메시지 컨벤션
+### [Git commit 메시지 컨벤션]
 - `feat` : 새로운 기능 추가
 - `fix` : 기능 개선 또는 수정, 버그 수정
 - `docs` : 문서 수정
