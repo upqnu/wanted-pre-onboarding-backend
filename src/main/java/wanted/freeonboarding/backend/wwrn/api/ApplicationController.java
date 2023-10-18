@@ -5,15 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import wanted.freeonboarding.backend.wwrn.domain.Applicant;
 import wanted.freeonboarding.backend.wwrn.domain.Application;
 import wanted.freeonboarding.backend.wwrn.domain.dto.ApplicationCreateDto;
 import wanted.freeonboarding.backend.wwrn.domain.dto.ApplicationPatchDto;
-import wanted.freeonboarding.backend.wwrn.repository.ApplicantRepository;
 import wanted.freeonboarding.backend.wwrn.service.ApplicationService;
 
 import java.net.URI;
-import java.security.Principal;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,8 +18,8 @@ import java.security.Principal;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
-    private final ApplicantRepository applicantRepository;
 
+    /* (채용공고에 대한) 지원서 작성 */
 //    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @PostMapping("/create")
     public ResponseEntity<Application> createApplication(@RequestBody ApplicationCreateDto applicationCreateDto, @PathVariable Long jobPostingId) {
@@ -40,6 +37,8 @@ public class ApplicationController {
                 .body(newApplication);
     }
 
+    /* 지원서 수정 */
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @PatchMapping("{applicationId}/update")
     public ResponseEntity<Application> editApplication(
             @RequestBody ApplicationPatchDto applicationPatchDto,
@@ -50,6 +49,8 @@ public class ApplicationController {
         return ResponseEntity.ok(updatedApplication);
     }
 
+    /* 지원서 삭제 */
+//    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @DeleteMapping("{applicationId}/delete")
     public ResponseEntity<String> deleteApplication(@PathVariable Long applicationId, @PathVariable Long jobPostingId) {
         applicationService.deleteApplication(applicationId, jobPostingId);

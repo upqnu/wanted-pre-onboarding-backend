@@ -4,12 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wanted.freeonboarding.backend.wwrn.domain.Applicant;
 import wanted.freeonboarding.backend.wwrn.domain.Application;
 import wanted.freeonboarding.backend.wwrn.domain.JobPosting;
 import wanted.freeonboarding.backend.wwrn.domain.dto.ApplicationCreateDto;
 import wanted.freeonboarding.backend.wwrn.domain.dto.ApplicationPatchDto;
-import wanted.freeonboarding.backend.wwrn.repository.ApplicantRepository;
 import wanted.freeonboarding.backend.wwrn.repository.ApplicationRepository;
 import wanted.freeonboarding.backend.wwrn.repository.JobPostingRepository;
 
@@ -21,7 +19,6 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JobPostingRepository jobPostingRepository;
-    private final ApplicantRepository applicantRepository;
 
     @Transactional
     public Application createApplication(ApplicationCreateDto applicationCreateDto, Long jobPostingId) {

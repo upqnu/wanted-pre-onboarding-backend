@@ -2,7 +2,6 @@ package wanted.freeonboarding.backend.wwrn.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,7 @@ public class JobPostingController {
 
     private final JobPostingService jobPostingService;
 
+    /* 채용공고 작성 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PostMapping("/create")
     public ResponseEntity<JobPosting> createJobPosting(@RequestBody JobPostingCreateDto jobPostingCreateDtoDto) {
@@ -39,6 +39,7 @@ public class JobPostingController {
                 .body(newJobPosting);
     }
 
+    /* 채용공고 수정 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PatchMapping("/{jobPostingId}/update")
     public ResponseEntity<JobPosting> editJobPosting(@RequestBody JobPostingPatchDto jobPostingPatchDto, @PathVariable Long jobPostingId) {
@@ -46,6 +47,7 @@ public class JobPostingController {
         return ResponseEntity.ok(updatedJobPosting);
     }
 
+    /* 채용공고 삭제 */
     //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @DeleteMapping("/{jobPostingId}/delete")
     public ResponseEntity<String> deleteJobPosting(@PathVariable Long jobPostingId) {
@@ -53,12 +55,14 @@ public class JobPostingController {
         return ResponseEntity.ok("채용공고 삭제가 완료되었습니다.");
     }
 
+    /* 모든 채용공고 조회 */
     @GetMapping("")
     public ResponseEntity<List<JobPosting>> getJobPostingList() {
         List<JobPosting> allJobPostings = jobPostingService.getAllJobListing();
         return ResponseEntity.ok(allJobPostings);
     }
 
+    /* 채용공고 리스트에서 검색 */
     @GetMapping("/search")
     public ResponseEntity<Page<JobPosting>> searchJobPosting(Pageable pageable, String searchKeyword) {
 
@@ -87,6 +91,7 @@ public class JobPostingController {
         return ResponseEntity.ok(searchList);
     }
 
+    /* 채용공고 개별 조회 */
     @GetMapping("/{jobPostingId}")
     public ResponseEntity<List<JobPosting>> getJobPosting(@PathVariable Long jobPostingId) {
         List<JobPosting> singleJobPostingAndOthers = jobPostingService.getJobPostingByPostingId(jobPostingId);

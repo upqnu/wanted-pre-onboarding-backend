@@ -1,6 +1,5 @@
 package wanted.freeonboarding.backend.wwrn.security_config;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -8,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import wanted.freeonboarding.backend.wwrn.domain.Applicant;
 import wanted.freeonboarding.backend.wwrn.domain.Company;
@@ -21,13 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final ApplicantRepository applicantRepository;
     private final CompanyRepository companyRepository;
-//    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomUserDetailsService(ApplicantRepository applicantRepository, CompanyRepository companyRepository/*, PasswordEncoder passwordEncoder*/) {
+    public CustomUserDetailsService(ApplicantRepository applicantRepository, CompanyRepository companyRepository) {
         this.applicantRepository = applicantRepository;
         this.companyRepository = companyRepository;
-//        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -79,12 +75,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         if (companyPassword != null) {
             log.info("Password {} found for user {} in the company database.", companyPassword, userEmail);
-//            return passwordEncoder.encode(companyPassword);
             return encodePassword(companyPassword);
         }
         else if (applicantPassword != null) {
             log.info("Password {} found for user {} in the applicant database.", applicantPassword, userEmail);
-//            return passwordEncoder.encode(applicantPassword);
             return encodePassword(applicantPassword);
         }
         else {
@@ -95,8 +89,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // 비밀번호를 인코딩하기 위한 메서드
     private String encodePassword(String password) {
-        // 여기에서 passwordEncoder를 사용하여 비밀번호를 인코딩합니다.
-        // 예를 들어, BCryptPasswordEncoder를 사용할 수 있습니다.
+        // 여기에서 passwordEncoder를 사용하여 비밀번호를 인코딩
+        // (ex) BCryptPasswordEncoder 사용 가능
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
     }

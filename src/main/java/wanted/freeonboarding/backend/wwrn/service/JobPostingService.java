@@ -103,16 +103,19 @@ public class JobPostingService {
         return allJobPostings;
     }
 
+    /* 채용공고 제목 내에서 검색어로 조회 (대소문자 구분 없이 검색 가능) */
     @Transactional
     public Page<JobPosting> jobPostingByPostingTitle(String searchKeyword, Pageable pageable) {
         return jobPostingRepository.findByPostingTitleContainingIgnoreCase(searchKeyword, pageable);
     }
 
+    /* 채용 포지션 내에서 검색어로 조회 (대소문자 구분 없이 검색 가능) */
     @Transactional
     public Page<JobPosting> jobPostingByVacantPosition(String searchKeyword, Pageable pageable) {
         return jobPostingRepository.findByVacantPositionContainingIgnoreCase(searchKeyword, pageable);
     }
 
+    /* 직무소개 내용 내에서 검색어로 조회 (대소문자 구분 없이 검색 가능) */
     @Transactional
     public Page<JobPosting> jobPostingByJobDescription(String searchKeyword, Pageable pageable) {
         return jobPostingRepository.findByJobDescriptionContainingIgnoreCase(searchKeyword, pageable);

@@ -20,6 +20,7 @@ public class ApplicantController {
 
     private final ApplicantService applicantService;
 
+    /* 지원자 회원 가입(생성) */
     @PostMapping("/join")
     public ResponseEntity<Applicant> createUser(@RequestBody ApplicantDto applicantDto) {
         Applicant newApplicant = applicantService.createApplicant(applicantDto);
@@ -36,6 +37,7 @@ public class ApplicantController {
                 .body(newApplicant);
     }
 
+    /* 지원자 정보 수정 */
 //    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @PatchMapping("/{applicantId}/update")
     public ResponseEntity<Applicant> editUser(@RequestBody ApplicantDto applicantDto, @PathVariable Long applicantId) {
@@ -43,6 +45,7 @@ public class ApplicantController {
         return ResponseEntity.ok(updateApplicant);
     }
 
+    /* 지원자 회원 탈퇴(삭제) */
 //    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @DeleteMapping("/{applicantId}/delete")
     public ResponseEntity<String> deleteUser(@PathVariable Long applicantId) {
@@ -50,6 +53,7 @@ public class ApplicantController {
         return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
     }
 
+    /* 지원자가 자신의 정보 조회 */
 //    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @GetMapping("/{applicantId}")
     public ResponseEntity<Applicant> getUser(@PathVariable Long applicantId) {
@@ -57,6 +61,7 @@ public class ApplicantController {
         return ResponseEntity.ok(applicant);
     }
 
+    /* 지원자가 작성한 모든 지원서 조회 */
 //    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @GetMapping("/{applicantId}/applications")
     public ResponseEntity<List<Application>> getAllApplications(@PathVariable Long applicantId) {
@@ -64,6 +69,7 @@ public class ApplicantController {
         return ResponseEntity.ok(allApplications);
     }
 
+    /* 지원자가 작성한 개별 지원서 조회 */
 //    @PreAuthorize("hasRole('ROLE_APPLICANT')")
     @GetMapping("/{applicantId}/applications/{applicationId}")
     public ResponseEntity<Application> getApplication(@PathVariable Long applicationId) {

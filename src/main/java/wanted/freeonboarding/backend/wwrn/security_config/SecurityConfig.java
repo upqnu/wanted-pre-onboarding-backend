@@ -33,9 +33,6 @@ public class SecurityConfig {
     @Autowired
     private CompanyRepository companyRepository;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
     @Bean
     public UserDetailsService customUserDetailsService() {
         return new CustomUserDetailsService(applicantRepository, companyRepository/*, passwordEncoder*/);
@@ -74,8 +71,6 @@ public class SecurityConfig {
                                 .loginProcessingUrl("/perform_login") // 로그인 처리를 위한 경로
                                 .usernameParameter("username") // 로그인 폼에서 사용자 이름 입력 필드의 name 속성
                                 .passwordParameter("password") // 로그인 폼에서 비밀번호 입력 필드의 name 속성
-//                                .successHandler(yourSuccessHandler) // 로그인 성공 시의 핸들러
-//                                .failureHandler(yourFailureHandler) // 로그인 실패 시의 핸들러
                 )
 
                 .sessionManagement((sessionManagement) -> sessionManagement
@@ -85,7 +80,6 @@ public class SecurityConfig {
                 /* 로그아웃 설정 */
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
                         .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/home")
                         .invalidateHttpSession(true) // 세션 무효화
                         .deleteCookies("JSESSIONID") // 쿠키 삭제 (선택 사항)
                 );

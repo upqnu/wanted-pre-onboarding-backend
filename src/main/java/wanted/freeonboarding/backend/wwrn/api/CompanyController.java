@@ -21,6 +21,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
+    /* 회사로 회원 가입(회사 생성) */
     @PostMapping("/join")
     public ResponseEntity<Company> createCompany(@RequestBody CompanyDto companyDto) {
         Company newCompany = companyService.createCompany(companyDto);
@@ -36,6 +37,7 @@ public class CompanyController {
                 .body(newCompany);
     }
 
+    /* 회사 정보 수정 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @PatchMapping("/{companyId}/update")
     public ResponseEntity<Company> editCompany(@RequestBody CompanyDto companyDto, @PathVariable Long companyId) {
@@ -43,6 +45,7 @@ public class CompanyController {
         return ResponseEntity.ok(updatedCompany);
     }
 
+    /* 회사 탈퇴(삭제) */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @DeleteMapping("/{companyId}/delete")
     public ResponseEntity<String> deleteCompany(@PathVariable Long companyId) {
@@ -50,6 +53,7 @@ public class CompanyController {
         return ResponseEntity.ok("회사 탈퇴가 완료되었습니다.");
     }
 
+    /* 개별 회사 정보 조회 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/{companyId}")
     public ResponseEntity<Company> getCompany(@PathVariable Long companyId) {
@@ -57,6 +61,7 @@ public class CompanyController {
         return ResponseEntity.ok(company);
     }
 
+    /* 특정 회사가 작성한 모든 채용공고 리스트 조회 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/{companyId}/job-posting")
     public ResponseEntity<List<JobPosting>> getAllCompanyJobPostings(@PathVariable Long companyId) {
@@ -64,6 +69,7 @@ public class CompanyController {
         return ResponseEntity.ok(jobPostingList);
     }
 
+    /* 특정 회사가 작성한 개별 채용공고 조회 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/{companyId}/job-posting/{jobPostingId}")
     public ResponseEntity<JobPosting> getSingleCompanyJobPosting(@PathVariable Long companyId, @PathVariable Long jobPostingId) {
@@ -71,6 +77,7 @@ public class CompanyController {
         return ResponseEntity.ok(jobPosting);
     }
 
+    /* 특정 회사가 작성한 개별 채용공고에 지원한 모든 지원서 조회 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/{companyId}/job-posting/{jobPostingId}/applications")
     public ResponseEntity<List<Application>> getAllApplicationsPerJobPosting(@PathVariable Long jobPostingId, @PathVariable Long companyId) {
@@ -78,6 +85,7 @@ public class CompanyController {
         return ResponseEntity.ok(allApplicationsPerJobPosting);
     }
 
+    /* 특정 회사가 작성한 개별 채용공고에 지원한 개별 지원서 조회 */
 //    @PreAuthorize("hasRole('ROLE_COMPANY')")
     @GetMapping("/{companyId}/job-posting/{jobPostingId}/applications/{applicationId}")
     public ResponseEntity<Application> getSingleApplicationPerJobPosting(

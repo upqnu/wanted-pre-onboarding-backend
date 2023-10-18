@@ -15,7 +15,6 @@ import wanted.freeonboarding.backend.wwrn.repository.ApplicationRepository;
 import java.util.List;
 import java.util.Optional;
 
-
 @RequiredArgsConstructor
 @Service
 public class ApplicantService {

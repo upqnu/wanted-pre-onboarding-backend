@@ -41,8 +41,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             // 사용자의 권한 정보를 설정합니다.
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-            // 사용자가 가지는 권한을 여기에 추가합니다.
-            // 예를 들어, "ROLE_USER" 또는 "ROLE_ADMIN"과 같은 권한을 사용자에게 부여할 수 있습니다.
+            // 사용자가 가지는 권한을 여기에 추가
+            // (ex) "ROLE_USER" 또는 "ROLE_ADMIN"과 같은 권한을 사용자에게 부여 가능.
             // authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             // authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 

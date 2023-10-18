@@ -40,6 +40,7 @@ public class HomeController {
     @Autowired
     private ApplicantRepository applicantRepository;
 
+    /* 회사의 로그인 */
     @PostMapping("/login/company")
     public ResponseEntity<?> companyLogin(@RequestBody LoginRequest request, HttpSession session) {
         try {
@@ -59,18 +60,13 @@ public class HomeController {
                 log.info("권한 : " + String.valueOf(getAuthorities()));
                 return ResponseEntity.ok(company);
             }
-//            if (company == null) {
-//                log.error("회사 정보를 찾을 수 없습니다.");
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회사 정보를 찾을 수 없습니다.");
-//            } else {
-//                return ResponseEntity.ok(company);
-//            }
         } catch (Exception e) {
             log.error("오류로 로그인 실패: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("오류로 회사 로그인 실패");
         }
     }
 
+    /* 지원자의 로그인 */
     @PostMapping("/login/applicant")
     public ResponseEntity<?> applicantLogin(@RequestBody LoginRequest request, HttpSession session) {
         try {
@@ -90,22 +86,13 @@ public class HomeController {
                 log.info("권한 : " + String.valueOf(getAuthorities()));
                 return ResponseEntity.ok(applicant);
             }
-//            if (applicant == null) {
-//                log.error("지원자 정보를 찾을 수 없습니다.");
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("지원자 정보를 찾을 수 없습니다.");
-//            } else if (!request.getPassword().equals(applicant.getPassword())) {
-//                log.error("비밀번호가 일치하지 않습니다.");
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-//            } else {
-//                return ResponseEntity.ok(applicant);
-//            }
         } catch (Exception e) {
             log.error("오류로 로그인 실패: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("오류로 지원자 로그인 실패");
         }
     }
 
-    // 로그인 이후에 권한 정보를 가져오는 메서드
+    /* 로그인 직후, 회사 또는 지원자의 권한 정보를 가져오는 메서드 */
     private List<String> getAuthorities() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -116,11 +103,13 @@ public class HomeController {
         return Collections.emptyList();
     }
 
+    /* 로그아웃 */
     @GetMapping("/logout")
     public String logout() {
         return "로그아웃 되었!";
     }
 
+    /* 메인페이지로 이동 */
     @GetMapping("/home")
     public String home() {
         return "여기는 원티드 프리온보딩 백엔드 - 사전과제 [wanted wantU right now]의 메인 페이지!";
