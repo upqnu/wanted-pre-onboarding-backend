@@ -46,11 +46,13 @@
 
 ### 4. DB 설계
 <details>
+    
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/783a4501-2457-4a1c-9745-8e0823e83750)
 </details>
 
 ### 5. API 설계
 <details>
+    
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/f1153cc0-737f-4cf2-af12-0f531afff151)
 
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/86885231-32db-428b-abbf-3587915f1249)
