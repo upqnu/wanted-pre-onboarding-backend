@@ -45,11 +45,12 @@
     - 사용자의 모든 지원서 리스트를 조회 + 개별 지원서를 조회
 
 ### 4. DB 설계
-
+<details>
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/783a4501-2457-4a1c-9745-8e0823e83750)
+</details>
 
 ### 5. API 설계
-
+<details>
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/f1153cc0-737f-4cf2-af12-0f531afff151)
 
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/86885231-32db-428b-abbf-3587915f1249)
@@ -59,6 +60,7 @@
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/86d25fc0-1b85-42fe-8ffe-656313cfdd84)
 
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/209899ce-4303-4867-8489-d109de30079e)
+</details>
 
 ### [Git commit 메시지 컨벤션]
 - `feat` : 새로운 기능 추가
