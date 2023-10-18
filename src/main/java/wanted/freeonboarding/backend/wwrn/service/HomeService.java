@@ -200,8 +200,30 @@ public class HomeService {
                 .workingCity("Barcelona")
                 .build();
 
+        JobPosting jobPosting6 = JobPosting.builder()
+                .postingTitle("PHP Engineer")
+                .company(companies.get(0))
+                .vacantPosition("PHP Developer")
+                .jobDescription("We are looking for a PHP engineer to join our team.")
+                .language("PHP")
+                .compensation(80000)
+                .workingNation("UAE")
+                .workingCity("Dubai")
+                .build();
+
+        JobPosting jobPosting7 = JobPosting.builder()
+                .postingTitle("ERP Engineer")
+                .company(companies.get(0))
+                .vacantPosition("ERP Developer")
+                .jobDescription("We are looking for a ERP engineer to join our team.")
+                .language("ERP")
+                .compensation(80000)
+                .workingNation("Korea")
+                .workingCity("Pangyo")
+                .build();
+
         jobPostings.addAll(jobPostingRepository.saveAll(List.of(
-                jobPosting1, jobPosting2, jobPosting3, jobPosting4, jobPosting5
+                jobPosting1, jobPosting2, jobPosting3, jobPosting4, jobPosting5, jobPosting6, jobPosting7
         )));
 
         return jobPostings;
