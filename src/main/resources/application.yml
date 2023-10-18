@@ -21,6 +21,7 @@ logging:
         jdbc:
           datasource:
             init: DEBUG
+        security: DEBUG
 
 #    wanted:
 #      freeonboarding:

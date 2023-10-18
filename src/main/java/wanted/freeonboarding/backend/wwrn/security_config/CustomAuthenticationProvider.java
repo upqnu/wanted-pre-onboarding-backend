@@ -3,79 +3,69 @@ package wanted.freeonboarding.backend.wwrn.security_config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder;
 
 @Component
 @Slf4j
-public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
+public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    public CustomAuthenticationProvider(CustomUserDetailsService customUserDetailsService) {
-        setUserDetailsService(customUserDetailsService);
+    private final UserDetailsService userDetailsService;
+    private final BCryptPasswordEncoder passwordEncoder; // BCryptPasswordEncoder를 사용
+
+    @Autowired
+    public CustomAuthenticationProvider(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        try {
-            // 원래의 인증 프로세스 실행
-            Authentication auth = super.authenticate(authentication);
-            log.info("auth : " + String.valueOf(auth));
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+        log.info(String.valueOf(authentication));
+        log.info(username + " : " + password);
+        UserDetails user = userDetailsService.loadUserByUsername(username);
 
-            // 여기서 사용자의 권한 정보를 직접 추출
-            List<String> authorities = new ArrayList<>();
-            for (GrantedAuthority authority : auth.getAuthorities()) {
-                authorities.add(authority.getAuthority());
-            }
-            log.info("authorities : " + String.valueOf(authorities));
+        if (user != null && passwordMatches(password, user.getPassword())) {
+            // 사용자의 권한 정보를 설정합니다.
+            List<GrantedAuthority> authorities = new ArrayList<>();
 
-            // 사용자의 권한 정보를 설정한 새로운 Authentication 객체 생성
-            UsernamePasswordAuthenticationToken authenticatedUser = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), auth.getAuthorities());
-            log.info("authenticatedUser : " + String.valueOf(authenticatedUser));
+            // 사용자가 가지는 권한을 여기에 추가합니다.
+            // 예를 들어, "ROLE_USER" 또는 "ROLE_ADMIN"과 같은 권한을 사용자에게 부여할 수 있습니다.
+            // authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            // authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-            // SecurityContextHolder에 새로운 Authentication 객체 설정
-            SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+            // 사용자의 권한을 UserDetails에서 가져와서 authorities에 추가할 수도 있습니다.
+            authorities.addAll(user.getAuthorities());
 
-            log.info("auth : " + String.valueOf(auth));
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, authorities);
+            log.info(String.valueOf(auth));
             return auth;
-        } catch (AuthenticationException e) {
-            // 인증 실패 시 예외 처리
-            throw e;
+        } else {
+            log.error("Authentication failed for user: " + username);
+            throw new BadCredentialsException("Authentication failed for user: " + username);
         }
+
     }
 
-//    public CustomAuthenticationProvider(CustomUserDetailsService customUserDetailsService) {
-//        setUserDetailsService(customUserDetailsService);
-//
-//        // 아래 라인을 추가하여 비밀번호 암호화 검사를 비활성화합니다.
-////        setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-//    }
-//
-//    @Override
-//    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//        // 사용자 인증을 수행하고 Authentication 객체를 반환합니다.
-//        return super.authenticate(authentication);
-//    }
-//
-//    @Override
-//    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-//        // 여기에서 사용자의 비밀번호를 추가로 확인할 수 있습니다.
-//        // 기존의 비밀번호 확인 로직을 추가합니다.
-//        super.additionalAuthenticationChecks(userDetails, authentication);
-//    }
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+
+    // 비밀번호 일치 여부를 확인하는 메서드
+    private boolean passwordMatches(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 }

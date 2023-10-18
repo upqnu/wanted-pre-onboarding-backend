@@ -5,41 +5,40 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import wanted.freeonboarding.backend.wwrn.domain.Applicant;
-import wanted.freeonboarding.backend.wwrn.domain.Member;
-import wanted.freeonboarding.backend.wwrn.domain.MemberStatus;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import wanted.freeonboarding.backend.wwrn.repository.ApplicantRepository;
+import wanted.freeonboarding.backend.wwrn.repository.CompanyRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
+
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Bean
-    public PasswordEncoder encoder(){
-//        return new BCryptPasswordEncoder();
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    public UserDetailsService customUserDetailsService() {
+        return new CustomUserDetailsService(applicantRepository, companyRepository/*, passwordEncoder*/);
     }
 
     @Bean
@@ -78,7 +77,7 @@ public class SecurityConfig {
 //                                .successHandler(yourSuccessHandler) // 로그인 성공 시의 핸들러
 //                                .failureHandler(yourFailureHandler) // 로그인 실패 시의 핸들러
                 )
-                .userDetailsService(customUserDetailsService)
+
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
