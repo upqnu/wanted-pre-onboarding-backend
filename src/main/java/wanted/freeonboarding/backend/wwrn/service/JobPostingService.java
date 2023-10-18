@@ -13,6 +13,7 @@ import wanted.freeonboarding.backend.wwrn.domain.dto.JobPostingPatchDto;
 import wanted.freeonboarding.backend.wwrn.repository.CompanyRepository;
 import wanted.freeonboarding.backend.wwrn.repository.JobPostingRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -101,10 +102,20 @@ public class JobPostingService {
     }
 
     @Transactional
-    public JobPosting getJobPostingByPostingId(Long jobPostingId) {
-        JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
+    public List<JobPosting> getJobPostingByPostingId(Long jobPostingId) {
+
+        List<JobPosting> singleJobPostingAndOthers = new ArrayList<>();
+
+        JobPosting theVeryJobPosting = jobPostingRepository.findById(jobPostingId)
                 .orElseThrow(() -> new EntityNotFoundException("[ " + jobPostingId + "번 채용공고를 찾을 수 없습니다. ]"));
 
-        return jobPosting;
+        singleJobPostingAndOthers.add(theVeryJobPosting);
+
+        Company postingCompany = theVeryJobPosting.getCompany();
+        for (JobPosting posting : postingCompany.getMyJobPosting()) {
+            if (posting.getJobPostingId() != jobPostingId) singleJobPostingAndOthers.add(posting);
+        }
+
+        return singleJobPostingAndOthers;
     }
 }
