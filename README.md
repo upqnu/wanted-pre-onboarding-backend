@@ -48,3 +48,13 @@
 ![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/783a4501-2457-4a1c-9745-8e0823e83750)
 
 ### 5. API 설계
+
+![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/3a582bdf-eaf6-4a57-90c2-04ad72934147)
+
+![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/86885231-32db-428b-abbf-3587915f1249)
+
+![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/fa594ccc-f826-4d24-97d7-0c07affeb644)
+
+![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/86d25fc0-1b85-42fe-8ffe-656313cfdd84)
+
+![image](https://github.com/upqnu/wanted-pre-onboarding-backend/assets/101033614/209899ce-4303-4867-8489-d109de30079e)
