@@ -2,6 +2,8 @@ package wanted.freeonboarding.backend.wwrn.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -102,6 +104,21 @@ public class JobPostingService {
     }
 
     @Transactional
+    public Page<JobPosting> jobPostingByPostingTitle(String searchKeyword, Pageable pageable) {
+        return jobPostingRepository.findByPostingTitleContainingIgnoreCase(searchKeyword, pageable);
+    }
+
+    @Transactional
+    public Page<JobPosting> jobPostingByVacantPosition(String searchKeyword, Pageable pageable) {
+        return jobPostingRepository.findByVacantPositionContainingIgnoreCase(searchKeyword, pageable);
+    }
+
+    @Transactional
+    public Page<JobPosting> jobPostingByJobDescription(String searchKeyword, Pageable pageable) {
+        return jobPostingRepository.findByJobDescriptionContainingIgnoreCase(searchKeyword, pageable);
+    }
+
+    @Transactional
     public List<JobPosting> getJobPostingByPostingId(Long jobPostingId) {
 
         List<JobPosting> singleJobPostingAndOthers = new ArrayList<>();
@@ -118,4 +135,5 @@ public class JobPostingService {
 
         return singleJobPostingAndOthers;
     }
+
 }

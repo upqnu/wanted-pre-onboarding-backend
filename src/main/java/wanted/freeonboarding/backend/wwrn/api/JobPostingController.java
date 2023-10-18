@@ -1,6 +1,8 @@
 package wanted.freeonboarding.backend.wwrn.api;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +57,34 @@ public class JobPostingController {
     public ResponseEntity<List<JobPosting>> getJobPostingList() {
         List<JobPosting> allJobPostings = jobPostingService.getAllJobListing();
         return ResponseEntity.ok(allJobPostings);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<JobPosting>> searchJobPosting(Pageable pageable, String searchKeyword) {
+
+        List<JobPosting> tmpPostingList = jobPostingService.getAllJobListing();
+
+        // 페이지 번호, 페이지 크기 및 정렬 방법 설정
+        int pageNumber = 0; // 원하는 페이지 번호 (0부터 시작)
+        int pageSize = 5; // 원하는 페이지 크기
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+
+        Page<JobPosting> searchList = null;
+
+        if (searchKeyword == null) {
+            searchList = new PageImpl<>(tmpPostingList, pageRequest, tmpPostingList.size());
+        } else {
+            Page<JobPosting> tmpSearchList;
+            tmpSearchList = jobPostingService.jobPostingByPostingTitle(searchKeyword, pageable);
+            if (tmpSearchList.getNumberOfElements() > 0) searchList = tmpSearchList;
+            else {
+                tmpSearchList = jobPostingService.jobPostingByVacantPosition(searchKeyword, pageable);
+                if (tmpSearchList.getNumberOfElements() > 0) searchList = tmpSearchList;
+                else searchList = jobPostingService.jobPostingByJobDescription(searchKeyword, pageable);
+            }
+        }
+
+        return ResponseEntity.ok(searchList);
     }
 
     @GetMapping("/{jobPostingId}")
