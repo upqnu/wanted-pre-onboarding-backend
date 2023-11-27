@@ -40,67 +40,73 @@ public class HomeController {
     @Autowired
     private ApplicantRepository applicantRepository;
 
-    /* 회사의 로그인 */
-    @PostMapping("/login/company")
-    public ResponseEntity<?> companyLogin(@RequestBody LoginRequest request, HttpSession session) {
-        try {
+//    /* 회사의 로그인 */
+//    @PostMapping("/login/company")
+//    public ResponseEntity<?> companyLogin(@RequestBody LoginRequest request, HttpSession session) {
+//        try {
+//
+//            // 회사 정보 가져오기
+//            Company company = companyRepository.findByEmail(request.getUsername());
+//
+//            if (company == null) {
+//                log.error("회사 정보를 찾을 수 없습니다.");
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회사 정보를 찾을 수 없습니다.");
+//            } else if (!passwordEncoder.matches(request.getPassword(), company.getPassword())) {
+//                log.error("비밀번호가 일치하지 않습니다.");
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+//            } else {
+//                // 세션에 권한 정보 저장
+//                session.setAttribute("userAuthorities", getAuthorities());
+//                log.info("권한 : " + String.valueOf(getAuthorities()));
+//                return ResponseEntity.ok(company);
+//            }
+//        } catch (Exception e) {
+//            log.error("오류로 로그인 실패: {}", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("오류로 회사 로그인 실패");
+//        }
+//    }
+//
+//    /* 지원자의 로그인 */
+//    @PostMapping("/login/applicant")
+//    public ResponseEntity<?> applicantLogin(@RequestBody LoginRequest request, HttpSession session) {
+//        try {
+//
+//            // 지원자 정보 가져오기
+//            Applicant applicant = applicantRepository.findByEmail(request.getUsername());
+//
+//            if (applicant == null) {
+//                log.error("지원자 정보를 찾을 수 없습니다.");
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("지원자 정보를 찾을 수 없습니다.");
+//            } else if (!passwordEncoder.matches(request.getPassword(), applicant.getPassword())) {
+//                log.error("비밀번호가 일치하지 않습니다.");
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+//            } else {
+//                // 세션에 권한 정보 저장
+//                session.setAttribute("userAuthorities", getAuthorities());
+//                log.info("권한 : " + String.valueOf(getAuthorities()));
+//                return ResponseEntity.ok(applicant);
+//            }
+//        } catch (Exception e) {
+//            log.error("오류로 로그인 실패: {}", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("오류로 지원자 로그인 실패");
+//        }
+//    }
+//
+//    /* 로그인 직후, 회사 또는 지원자의 권한 정보를 가져오는 메서드 */
+//    private List<String> getAuthorities() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication != null) {
+//            return authentication.getAuthorities().stream()
+//                    .map(authority -> ((SimpleGrantedAuthority) authority).getAuthority())
+//                    .collect(Collectors.toList());
+//        }
+//        return Collections.emptyList();
+//    }
 
-            // 회사 정보 가져오기
-            Company company = companyRepository.findByEmail(request.getUsername());
-
-            if (company == null) {
-                log.error("회사 정보를 찾을 수 없습니다.");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회사 정보를 찾을 수 없습니다.");
-            } else if (!passwordEncoder.matches(request.getPassword(), company.getPassword())) {
-                log.error("비밀번호가 일치하지 않습니다.");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-            } else {
-                // 세션에 권한 정보 저장
-                session.setAttribute("userAuthorities", getAuthorities());
-                log.info("권한 : " + String.valueOf(getAuthorities()));
-                return ResponseEntity.ok(company);
-            }
-        } catch (Exception e) {
-            log.error("오류로 로그인 실패: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("오류로 회사 로그인 실패");
-        }
-    }
-
-    /* 지원자의 로그인 */
-    @PostMapping("/login/applicant")
-    public ResponseEntity<?> applicantLogin(@RequestBody LoginRequest request, HttpSession session) {
-        try {
-
-            // 지원자 정보 가져오기
-            Applicant applicant = applicantRepository.findByEmail(request.getUsername());
-
-            if (applicant == null) {
-                log.error("지원자 정보를 찾을 수 없습니다.");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("지원자 정보를 찾을 수 없습니다.");
-            } else if (!passwordEncoder.matches(request.getPassword(), applicant.getPassword())) {
-                log.error("비밀번호가 일치하지 않습니다.");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-            } else {
-                // 세션에 권한 정보 저장
-                session.setAttribute("userAuthorities", getAuthorities());
-                log.info("권한 : " + String.valueOf(getAuthorities()));
-                return ResponseEntity.ok(applicant);
-            }
-        } catch (Exception e) {
-            log.error("오류로 로그인 실패: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("오류로 지원자 로그인 실패");
-        }
-    }
-
-    /* 로그인 직후, 회사 또는 지원자의 권한 정보를 가져오는 메서드 */
-    private List<String> getAuthorities() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            return authentication.getAuthorities().stream()
-                    .map(authority -> ((SimpleGrantedAuthority) authority).getAuthority())
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+    /* 로그인(Basic Authenticatoin) */
+    @GetMapping("/login")
+    public String hello() {
+        return "Hello!";
     }
 
     /* 로그아웃 */

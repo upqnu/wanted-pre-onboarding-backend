@@ -33,10 +33,10 @@ public class SecurityConfig {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @Bean
-    public UserDetailsService customUserDetailsService() {
-        return new CustomUserDetailsService(applicantRepository, companyRepository/*, passwordEncoder*/);
-    }
+//    @Bean
+//    public UserDetailsService customUserDetailsService() {
+//        return new CustomUserDetailsService(applicantRepository, companyRepository/*, passwordEncoder*/);
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
